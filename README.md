@@ -5,6 +5,8 @@ Aplicación web para la gestión y alquiler de canchas deportivas. La aplicació
 ## Tabla de Contenidos
 
 - [Instalación](#instalación)
+- [Uso](#uso)
+- [API Endpoints](#api-endpoints)
 
 ## Instalación
 
@@ -59,10 +61,99 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-6. **Ejecutar el servidor:**
+6. **Crea los roles por defecto:**
+
+```bash
+python manage.py create_default_rol
+```
+
+7. **Ejecutar el servidor:**
 
 ```bash
 python manage.py runserver
 ```
 
 ¡Listo! El proyecto ahora debería estar en funcionamiento en tu entorno local. Puedes acceder a él desde tu navegador web visitando `http://localhost:8000`.
+
+## Uso
+
+1. Ejecuta el servidor de desarrollo: 
+
+```
+python manage.py runserver
+```
+
+2. Accede a la API a través de las URL definidas.
+
+## API Endpoints
+
+### Crear nuevo usuario
+
+```http
+POST /api/auth/signUp
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `full_name` | `string` | **Requerido**. Nombre completo del usuario |
+| `email` | `string` | **Requerido**. Correo electrónico del usuario |
+| `password` | `string` | **Requerido**. Contraseña del usuario |
+| `phone` | `string` | **Requerido**. Numero celular del usuario |
+| `birth_date` | `string` | **Requerido**. Fecha de nacimiento del usuario |
+| `rol` | `int` | **Requerido**. Rol del usuario|
+
+#### Registro de un nuevo usuario
+
+```http
+POST /api/user/signUp
+Content-Type: application/json
+
+{
+	"full_name": "test fullname",
+	"email": "test@email.com",
+	"password": "testpassword",
+	"phone": "+57 321 987 6543",
+	"birth_date": "1999-09-09",
+	rol: 2
+}
+```
+
+#### Respuesta exitosa al registro
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Successful registration",
+	"data": {
+		"token": {
+			"token_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+		},
+		"user": {
+			"id": 6,
+			"full_name": "test fullname",
+			"email": "test@email.com",
+			"phone": "+57 321 987 6543",
+			"birth_date": "1999-09-09",
+			"is_active": true,
+			"is_staff": false,
+			"is_superuser": false,
+			"rol": 2
+		}
+	}
+}
+```
+
+### Inicio de sesión
+
+```http
+POST /api/auth/signIn
+```
+
+### Cierre de sesión
+
+```http
+GET /api/auth/signOut
+```
