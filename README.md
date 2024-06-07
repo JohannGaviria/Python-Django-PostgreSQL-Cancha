@@ -15,7 +15,7 @@ Aplicación web para la gestión y alquiler de canchas deportivas. La aplicació
 Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
 - Python (versión 3.12.2)
-- PostgreSQK (versión 16)
+- PostgreSQL (versión 16)
 - pip (administrador de paquetes de Python)
 
 ### Pasos de Instalación
@@ -105,7 +105,7 @@ POST /api/auth/signUp
 #### Registro de un nuevo usuario
 
 ```http
-POST /api/user/signUp
+POST /api/auth/signUp
 Content-Type: application/json
 
 {
@@ -202,4 +202,95 @@ Content-Type: application/json
 
 ```http
 GET /api/auth/signOut
+```
+
+### Cerrar sesión de usuario
+
+```http
+GET /api/auth/signOut
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Cierre de sesión de un usuario
+
+```http
+GET /api/user/signOut
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al cierre de sesión
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "succes",
+	"message": "Successful logout"
+}
+```
+
+### Crear nuevo usuario
+
+```http
+POST /api/auth/signUp
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `full_name` | `string` | Nombre completo del usuario |
+| `email` | `string` |. Correo electrónico del usuario |
+| `password` | `string` |. Contraseña del usuario |
+| `phone` | `string` |. Numero celular del usuario |
+| `birth_date` | `string` |. Fecha de nacimiento del usuario |
+| `rol` | `int` |. Rol del usuario|
+
+#### Registro de un nuevo usuario
+
+```http
+POST /api/users/update
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"full_name": "test new fullname",
+	"email": "testnew@email.com",
+	"password": "testnewpassword",
+	"phone": "+57 321 987 6543",
+	"birth_date": "1999-09-09",
+	"rol": 2
+}
+```
+
+#### Respuesta exitosa al registro
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Successful update",
+	"data": {
+		"token": {
+			"token_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"token_expiration": "2024-06-10T20:37:44.026227Z"
+		},
+		"user": {
+			"id": 1,
+			"full_name": "test new fullname",
+			"email": "testnew@email.com",
+			"phone": "+57 320 476 9010",
+			"birth_date": "1999-09-09",
+			"is_active": true,
+			"is_staff": false,
+			"is_superuser": false,
+			"rol": 2
+		}
+	}
+}
 ```
