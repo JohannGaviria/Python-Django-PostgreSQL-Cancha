@@ -114,7 +114,7 @@ Content-Type: application/json
 	"password": "testpassword",
 	"phone": "+57 321 987 6543",
 	"birth_date": "1999-09-09",
-	rol: 2
+	"rol": 2
 }
 ```
 
@@ -132,7 +132,7 @@ Content-Type: application/json
 			"token_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 		},
 		"user": {
-			"id": 6,
+			"id": 1,
 			"full_name": "test fullname",
 			"email": "test@email.com",
 			"phone": "+57 321 987 6543",
@@ -146,10 +146,56 @@ Content-Type: application/json
 }
 ```
 
-### Inicio de sesión
+### Inciar sesión de usuario
 
 ```http
 POST /api/auth/signIn
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `email` | `string` | **Requerido**. Email del usuario |
+| `password` | `string` | **Requerido**. Contraseña del usuario |
+
+#### Inicio de sesión de un usuario
+
+```http
+POST /api/auth/signIn
+Content-Type: application/json
+
+{
+	"email": "test@email.com",
+	"password": "testpassword"
+}
+```
+
+#### Respuesta exitosa al inicio de sesión
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "succes",
+	"message": "Successful login",
+	"data": {
+		"token": {
+			"token_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"token_expiration": "2024-06-10T02:27:34.039747Z"
+		},
+		"user": {
+			"id": 1,
+			"full_name": "test fullname",
+			"email": "test@email.com",
+			"phone": "+57 321 987 6543",
+			"birth_date": "1999-09-09",
+			"is_active": true,
+			"is_staff": false,
+			"is_superuser": false,
+			"rol": 2
+		}
+	}
+}
 ```
 
 ### Cierre de sesión
