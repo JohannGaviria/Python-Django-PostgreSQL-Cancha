@@ -198,12 +198,6 @@ Content-Type: application/json
 }
 ```
 
-### Cierre de sesión
-
-```http
-GET /api/auth/signOut
-```
-
 ### Cerrar sesión de usuario
 
 ```http
@@ -217,7 +211,7 @@ GET /api/auth/signOut
 #### Cierre de sesión de un usuario
 
 ```http
-GET /api/user/signOut
+GET /api/auth/signOut
 Content-Type: application/json
 Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
@@ -234,10 +228,10 @@ Content-Type: application/json
 }
 ```
 
-### Crear nuevo usuario
+### Actualizar al usuario
 
 ```http
-POST /api/auth/signUp
+POST /api/users/update
 ```
 
 | Parámetro | Tipo     | Descripción                |
@@ -249,7 +243,7 @@ POST /api/auth/signUp
 | `birth_date` | `string` |. Fecha de nacimiento del usuario |
 | `rol` | `int` |. Rol del usuario|
 
-#### Registro de un nuevo usuario
+#### Actualiza datos de un usuario
 
 ```http
 POST /api/users/update
@@ -266,7 +260,7 @@ Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 }
 ```
 
-#### Respuesta exitosa al registro
+#### Respuesta exitosa al actualizar usuario
 
 ```http
 HTTP/1.1 201 Created
@@ -292,5 +286,35 @@ Content-Type: application/json
 			"rol": 2
 		}
 	}
+}
+```
+
+### Eliminar un usuario
+
+```http
+GET /api/users/delete
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Elimina a un usuario
+
+```http
+GET /api/users/delete
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al eliminar usuario
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "successful deleted"
 }
 ```

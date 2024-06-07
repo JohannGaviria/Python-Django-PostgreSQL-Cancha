@@ -69,11 +69,14 @@ def update(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete(request):
+    # Obtiene el usuario autenticado
+    user = request.user
+
+    # Elimina el usuario
+    user.delete()
+
     # Respuesta exitosa
     return Response({
         'status': 'success',
-        'message': 'successful deleted',
-        'data': {
-            
-        }
+        'message': 'successful deleted'
     }, status=status.HTTP_200_OK)
