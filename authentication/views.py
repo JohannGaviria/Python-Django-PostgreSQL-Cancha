@@ -5,7 +5,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import User
 from .serializers import UserSerializer
@@ -129,6 +128,12 @@ def signIn(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def signOut(request):
+    # Obtiene el token del usuariocl
+    user = request.user
+    
+    # Elimina el token del usuario
+    Token.objects.filter(user=user).delete()
+
     # Devuelve los datos
     return Response({
         'status': 'succes',
