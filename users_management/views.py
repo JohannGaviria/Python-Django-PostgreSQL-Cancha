@@ -15,7 +15,7 @@ from datetime import timedelta
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def update(request):
+def update_user(request):
     # Obtenemos al usuario autenticado 
     user = request.user
 
@@ -68,7 +68,7 @@ def update(request):
 @api_view(['DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def delete(request):
+def delete_user(request):
     # Obtiene el usuario autenticado
     user = request.user
 

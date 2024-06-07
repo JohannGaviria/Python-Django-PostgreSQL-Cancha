@@ -9,7 +9,7 @@ from authentication.models import User, Rol
 class DeleteTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('delete')
+        self.url = reverse('delete_user')
         user_role = Rol.objects.create(rol='user')
         self.user = User.objects.create_user(
             full_name="test fullname",
