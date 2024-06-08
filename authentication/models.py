@@ -4,11 +4,13 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class CustomUserManager(BaseUserManager):
     # Método para crear un usuario regular
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password=None, rol=None, **extra_fields):
         if not email:
             raise ValueError('Email is required')
+        if rol is None:
+            raise ValueError('Rol is required')
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email, rol=rol, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -24,7 +26,8 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('The superuser must have is_superuser=True.')
 
-        return self.create_user(email, password, **extra_fields)
+        rol, created = Rol.objects.get_or_create(rol=Rol.ADMIN)
+        return self.create_user(email, password, rol=rol, **extra_fields)
 
 
 # Definición del modelo de Roles
