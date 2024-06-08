@@ -83,6 +83,7 @@ def delete_user(request):
     }, status=status.HTTP_200_OK)
 
 
+# Lógica para busqueda de usuarios por admin
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
@@ -107,7 +108,7 @@ def search_users_admin(request):
     # Serializa los datos de los usuarios
     serializer = UserSerializer(users, many=True)
 
-    # Respuesta
+    # Respuesta exitosa
     if not query:
         return Response({
             'status': 'success',
@@ -126,3 +127,46 @@ def search_users_admin(request):
                 'users': serializer.data
             }
         })
+
+
+# Lógica para activar/desactivar un usuario admin
+@api_view(['PATCH'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def change_user_status_admin(request, user_id):
+    # Buscar al usuario por el ID proporcionado
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'User not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Verifica si se está activando o desactivando al usuario
+    action = request.data.get('action', None)
+
+    if action == 'activate':
+        # Activa al usuario
+        user.is_active = True
+        message = 'User activated successfully'
+    elif action == 'deactivate':
+        # Desactiva al usuario
+        user.is_active = False
+        message = 'User deactivated successfully'
+    else:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Invalid action provided'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Guarda el cambio
+    user.save()
+
+    # Respuesta existosa
+    return Response({
+        'status': 'success',
+        'message': message
+    })

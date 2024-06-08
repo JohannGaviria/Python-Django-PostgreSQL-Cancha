@@ -136,6 +136,6 @@ def signOut(request):
 
     # Devuelve los datos
     return Response({
-        'status': 'succes',
+        'status': 'success',
         'message': 'Successful logout',
     }, status=status.HTTP_200_OK)

@@ -10,7 +10,6 @@ class SearchUsersAdminTestCase(TestCase):
         self.client = APIClient()
         self.url = reverse('search_users_admin')
         user_role = Rol.objects.create(rol='user')
-        admin_role = Rol.objects.create(rol='admin')
         User.objects.create_user(
             full_name="test fullname",
             email="test@email.com",

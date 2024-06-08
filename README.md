@@ -223,7 +223,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-	"status": "succes",
+	"status": "success",
 	"message": "Successful logout"
 }
 ```
@@ -237,11 +237,11 @@ POST /api/users/update
 | Parámetro | Tipo     | Descripción                |
 | :-------- | :------- | :------------------------- |
 | `full_name` | `string` | Nombre completo del usuario |
-| `email` | `string` |. Correo electrónico del usuario |
-| `password` | `string` |. Contraseña del usuario |
-| `phone` | `string` |. Numero celular del usuario |
-| `birth_date` | `string` |. Fecha de nacimiento del usuario |
-| `rol` | `int` |. Rol del usuario|
+| `email` | `string` | Correo electrónico del usuario |
+| `password` | `string` | Contraseña del usuario |
+| `phone` | `string` | Numero celular del usuario |
+| `birth_date` | `string` | Fecha de nacimiento del usuario |
+| `rol` | `int` | Rol del usuario|
 
 #### Actualiza datos de un usuario
 
@@ -263,7 +263,7 @@ Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #### Respuesta exitosa al actualizar usuario
 
 ```http
-HTTP/1.1 201 Created
+HTTP/1.1 200 Ok
 Content-Type: application/json
 
 {
@@ -292,7 +292,7 @@ Content-Type: application/json
 ### Eliminar un usuario
 
 ```http
-GET /api/users/delete
+DELETE /api/users/delete
 ```
 
 | Parámetro | Tipo     | Descripción                |
@@ -302,7 +302,7 @@ GET /api/users/delete
 #### Elimina a un usuario
 
 ```http
-GET /api/users/delete
+DELETE /api/users/delete
 Content-Type: application/json
 Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
@@ -329,7 +329,7 @@ GET /api/users/search
 | :-------- | :------- | :------------------------- |
 | `token` | `string` | **Requerido**. Token de autenticación |
 
-#### Busca usuarios como administrador
+#### Busca todos los usuarios como administrador
 
 ```http
 GET /api/users/search
@@ -337,7 +337,7 @@ Content-Type: application/json
 Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-#### Respuesta exitosa al buscar usuarios como administrador
+#### Respuesta exitosa al buscar todos los usuarios como administrador
 
 ```http
 HTTP/1.1 200 OK
@@ -387,12 +387,12 @@ GET /api/users/search?query=
 | `token` | `string` | **Requerido**. Token de autenticación |
 | `query`     |	`string`   |	**Requerido**. Consulta de búsqueda |
 
-**tipos de parámetro:**
+**tipos de busquedas:**
 - Nombre completo del usuario
 - Email del usuario
 - Numero celular del usuario
 - Rol del usuario
-- Actividad del usuario
+- Estado del usuario
 
 #### Busca usuarios con parámetro como administrador
 
@@ -438,5 +438,65 @@ Content-Type: application/json
 			}
 		]
 	}
+}
+```
+
+### Activar/Desactivar usuarios como administrador
+
+```http
+PATCH /api/users/change-status/{user_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `user_id` | `int` | **Requerido**. ID del usuario |
+| `action`     |	`string`   |	**Requerido**. Acción a realizar: "activate" para activar al usuario o "deactivate" para desactivarlo. |
+
+#### Activa usuario como administrador
+
+```http
+PATCH /api/users/change-status/{user_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"action": "activate"
+}
+```
+
+#### Respuesta exitosa al activar el usuario como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "User activated successfully"
+}
+```
+
+#### Desactiva usuario como administrador
+
+```http
+PATCH /api/users/change-status/{user_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"action": "deactivate"
+}
+```
+
+#### Respuesta exitosa al desactivar el usuario como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "User deactivated successfully"
 }
 ```
