@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from django.utils import timezone
 from django.db.models import Q
-from authentication.models import User
+from authentication.models import User, Rol
 from authentication.serializers import UserSerializer
 from datetime import timedelta
 
@@ -129,7 +129,7 @@ def search_users_admin(request):
         })
 
 
-# Lógica para activar/desactivar un usuario admin
+# Lógica para activar/desactivar un usuario por admin
 @api_view(['PATCH'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
@@ -165,8 +165,108 @@ def change_user_status_admin(request, user_id):
     # Guarda el cambio
     user.save()
 
-    # Respuesta existosa
+    # Respuesta exitosa
     return Response({
         'status': 'success',
         'message': message
     })
+
+
+# Lógica para cambiar el rol a un usuario por admin
+@api_view(['PATCH'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def change_user_role_admin(request, user_id):
+    # Buscar al usuario por el ID proporcionado
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'User not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Verifica si se está cambiando a admin o user
+    action = request.data.get('action', None)
+
+    if action == 'user':
+        # Cambia los valores correspodientes
+        user.is_staff = False
+        user.is_superuser = False
+        rol = Rol.objects.get(rol=action)
+        user.rol = rol
+    
+    elif action == 'admin':
+        # Cambia los valores correspodientes
+        user.is_staff = True
+        user.is_superuser = True
+        rol = Rol.objects.get(rol=action)
+        user.rol = rol
+
+    else:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Invalid action provided'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Guarda el cambio
+    user.save()
+
+    # Serializa los datos del usuario
+    serializer = UserSerializer(user)
+    
+    # Elimina el token viejo del usuario
+    Token.objects.filter(user=user).delete()
+
+    # Crea un nuevo token para el usuario
+    token = Token.objects.create(user=user)
+
+    # Calcula la nueva fecha de expiración del token
+    expiration = timezone.now() + timedelta(days=3)
+
+    # Respuesta de exitosa
+    return Response({
+        'status': 'success',
+        'message': 'successful role change',
+        'data': {
+            'token': {
+                'token_key': token.key,
+                'token_expiration': expiration
+            },
+            'user': serializer.data
+        }
+    })
+
+
+# Lógica para eliminar un usuario por admin
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def delete_user_admin(request, user_id):
+    # Buscar al usuario por el ID proporcionado
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'User not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    # Verifica que el usuario no sea admin
+    if user.is_superuser:
+        return Response({
+            'status': 'errors',
+            'message': 'Cant remove another administrator'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    # Elimina al usuario
+    user.delete()
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'user deleted successfully'
+    }, status=status.HTTP_200_OK)

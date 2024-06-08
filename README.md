@@ -500,3 +500,128 @@ Content-Type: application/json
 	"message": "User deactivated successfully"
 }
 ```
+
+### Cambiar el rol a un usuario como administrador
+
+```http
+PATCH /api/users/change-role/{user_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `user_id` | `int` | **Requerido**. ID del usuario |
+| `action`     |	`string`   |	**Requerido**. Acción a realizar: "user" para usuario o "admin" para administrador |
+
+#### Cambia el rol a user como administrador
+
+```http
+PATCH /api/users/change-role/{user_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"action": "user"
+}
+```
+
+#### Respuesta exitosa a cambiar el rol a user como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "successful role change",
+	"data": {
+		"token": {
+			"token_key": "693774e3f7a7be669b12fa95c454f6c466c90d3e",
+			"token_expiration": "2024-06-11T18:43:04.359593Z"
+		},
+		"user": {
+			"id": 1,
+			"full_name": "test fullname1",
+			"email": "test1@email.com",
+			"phone": "+57 320 476 9010",
+			"birth_date": "1999-09-09",
+			"is_active": true,
+			"is_staff": false,
+			"is_superuser": false,
+			"rol": 2
+		}
+	}
+}
+```
+
+#### Cambia el rol a admin como administrador
+
+```http
+PATCH /api/users/change-role/{user_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"action": "admin"
+}
+```
+
+#### Respuesta exitosa a cambiar el rol a admin como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "successful role change",
+	"data": {
+		"token": {
+			"token_key": "693774e3f7a7be669b12fa95c454f6c466c90d3e",
+			"token_expiration": "2024-06-11T18:43:04.359593Z"
+		},
+		"user": {
+			"id": 1,
+			"full_name": "test fullname1",
+			"email": "test1@email.com",
+			"phone": "+57 320 476 9010",
+			"birth_date": "1999-09-09",
+			"is_active": true,
+			"is_staff": true,
+			"is_superuser": true,
+			"rol": 1
+		}
+	}
+}
+```
+
+### Eliminar a un usuario como administrador
+
+```http
+DELETE /api/users/delete-user/{user_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `user_id` | `int` | **Requerido**. ID del usuario |
+
+#### Elimina a un usuario como administrador
+
+```http
+DELETE /api/users/delete-user/{user_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a eliminar un usuario como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "user deleted successfully"
+}
+```
