@@ -318,3 +318,125 @@ Content-Type: application/json
 	"message": "successful deleted"
 }
 ```
+
+### Buscar todos los usuarios como administrador
+
+```http
+GET /api/users/search
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Busca usuarios como administrador
+
+```http
+GET /api/users/search
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al buscar usuarios como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "All users retrieved successfully",
+	"data": {
+		"result": 2,
+		"user": [
+			{
+				"id": 1,
+				"full_name": "test fullname1",
+				"email": "test1@email.com",
+				"phone": "+57 320 476 9010",
+				"birth_date": "1999-09-09",
+				"is_active": true,
+				"is_staff": false,
+				"is_superuser": false,
+				"rol": 2
+			},
+			{
+				"id": 2,
+				"full_name": "Test fullname2",
+				"email": "test2@email.com",
+				"phone": "+57 323 542 2103",
+				"birth_date": "1999-09-09",
+				"is_active": true,
+				"is_staff": false,
+				"is_superuser": false,
+				"rol": 2
+			}
+		]
+	}
+}
+```
+
+### Buscar usuarios con párametro como administrador
+
+```http
+GET /api/users/search?query=
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `query`     |	`string`   |	**Requerido**. Consulta de búsqueda |
+
+**tipos de parámetro:**
+- Nombre completo del usuario
+- Email del usuario
+- Numero celular del usuario
+- Rol del usuario
+- Actividad del usuario
+
+#### Busca usuarios con parámetro como administrador
+
+```http
+GET /api/users/search?query=consulta_de_búsqueda
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al buscar usuarios como administrador
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "User found successfully",
+	"data": {
+		"result": 2,
+		"user": [
+			{
+				"id": 1,
+				"full_name": "test fullname1",
+				"email": "test1@email.com",
+				"phone": "+57 320 476 9010",
+				"birth_date": "1999-09-09",
+				"is_active": true,
+				"is_staff": false,
+				"is_superuser": false,
+				"rol": 2
+			},
+			{
+				"id": 2,
+				"full_name": "Test fullname2",
+				"email": "test2@email.com",
+				"phone": "+57 323 542 2103",
+				"birth_date": "1999-09-09",
+				"is_active": true,
+				"is_staff": false,
+				"is_superuser": false,
+				"rol": 2
+			}
+		]
+	}
+}
+```

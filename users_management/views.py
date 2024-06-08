@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from django.utils import timezone
+from django.db.models import Q
 from authentication.models import User
 from authentication.serializers import UserSerializer
 from datetime import timedelta
@@ -80,3 +81,48 @@ def delete_user(request):
         'status': 'success',
         'message': 'successful deleted'
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def search_users_admin(request):
+    # Obtiene los parámetros de la URL
+    query = request.query_params.get('query', None)
+
+    # Si no se proporciona ningún parámetro de búsqueda, mostrar todos los usuarios
+    if not query:
+        # Obtiene todos los usuarios
+        users = User.objects.all()
+    else:
+        # Busca usuarios que coincidan con el parámetro de búsqueda
+        users = User.objects.filter(
+            Q(full_name__icontains=query) |
+            Q(email__icontains=query) |
+            Q(phone__icontains=query) |
+            Q(rol__rol__icontains=query) |
+            Q(is_active__icontains=query)
+        ).distinct()
+
+    # Serializa los datos de los usuarios
+    serializer = UserSerializer(users, many=True)
+
+    # Respuesta
+    if not query:
+        return Response({
+            'status': 'success',
+            'message': 'All users retrieved successfully',
+            'data': {
+                'result': len(serializer.data),
+                'users': serializer.data
+            }
+        })
+    else:
+        return Response({
+            'status': 'success',
+            'message': 'User found successfully',
+            'data': {
+                'result': len(serializer.data),
+                'users': serializer.data
+            }
+        })
