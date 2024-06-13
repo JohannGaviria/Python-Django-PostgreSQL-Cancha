@@ -9,4 +9,5 @@ urlpatterns = [
     # Urls para la API
     path('api/auth/', include('authentication.urls')),
     path('api/users/', include('users_management.urls')),
+    path('api/courts/', include('court_management.urls')),
 ]

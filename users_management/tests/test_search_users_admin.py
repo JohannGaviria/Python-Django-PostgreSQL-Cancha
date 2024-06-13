@@ -4,6 +4,7 @@ from rest_framework import status
 from django.urls import reverse
 from authentication.models import User, Rol
 
+
 # Tests para búsqueda de usuarios
 class SearchUsersAdminTestCase(TestCase):
     def setUp(self):
