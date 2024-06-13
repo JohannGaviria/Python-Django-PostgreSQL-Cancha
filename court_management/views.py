@@ -17,7 +17,7 @@ def surface_type_admin(request):
     # verifica que el metodo sea get para obtener los datos
     if request.method == 'GET':
         # Obtiene todos los datos del tipo de superficie
-        surface_types = SurfaceType.objects.all()
+        surface_types = SurfaceType.objects.all().order_by('id')
 
         # Obtiene la páginas solicitada
         pages = get_paginated(request, surface_types, 10)
@@ -27,7 +27,7 @@ def surface_type_admin(request):
         
         # Respuesta exitosa
         return Response({
-            'staus': 'success',
+            'status': 'success',
             'message': 'Correctly obtained surface types',
             'data': {
                 'surface_type': serializer.data
@@ -69,17 +69,17 @@ def court_status_admin(request):
     # verifica que el metodo sea get para obtener los datos
     if request.method == 'GET':
         # Obtiene todos los datos del estado de la cancha
-        court_status = CourtStatus.objects.all()
+        court_status = CourtStatus.objects.all().order_by('id')
 
         # Obtiene la páginas solicitada
         pages = get_paginated(request, court_status, 10)
 
         # Serializa los datos obtenidos
-        serializer = SurfaceTypeSerializer(pages, many=True)
+        serializer = CourtStatusSerializer(pages, many=True)
         
         # Respuesta exitosa
         return Response({
-            'staus': 'success',
+            'status': 'success',
             'message': 'Correctly obtained court status',
             'data': {
                 'court_status': serializer.data
@@ -121,7 +121,7 @@ def court_type_admin(request):
     # verifica que el metodo sea get para obtener los datos
     if request.method == 'GET':
         # Obtiene todos los datos del tipo de cancha
-        court_types = CourtType.objects.all()
+        court_types = CourtType.objects.all().order_by('id')
 
         # Obtiene la páginas solicitada
         pages = get_paginated(request, court_types, 10)
@@ -131,7 +131,7 @@ def court_type_admin(request):
         
         # Respuesta exitosa
         return Response({
-            'staus': 'success',
+            'status': 'success',
             'message': 'Correctly obtained court types',
             'data': {
                 'court_type': serializer.data
