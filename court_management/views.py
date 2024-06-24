@@ -170,14 +170,29 @@ def court_type_admin(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def add_court_admin(request):
-    # Respesta exitosa
+    # Serializa los datos recibidos en la solicitud
+    serializer = CourtSerializer(data=request.data)
+
+    # Verifica que los datos sean válidos
+    if serializer.is_valid():
+        # Guarda los datos
+        serializer.save()
+
+        # Respuesta exitosa
+        return Response({
+            'status': 'success',
+            'message': 'Court created correctly',
+            'data': {
+                'court': serializer.data
+            }
+        }, status=status.HTTP_201_CREATED)
+    
+    # Respuesta de error
     return Response({
-        'status': 'success',
-        'message': 'Court created correctly',
-        'data': {
-            'court'
-        }
-    }, status=status.HTTP_201_CREATED)
+        'status': 'errors',
+        'message': 'Validation failed',
+        'errors': serializer.errors
+    })
 
 
 # Lógica para actualizar cancha por admin
