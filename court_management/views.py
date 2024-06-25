@@ -199,15 +199,45 @@ def add_court_admin(request):
 @api_view(['PUT'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
-def update_court_admin(request):
-    # Respesta ecitosa
+def update_court_admin(request, court_id):
+    try:
+        # Obtiene la cancha por ID
+        court = Court.objects.get(id=court_id)
+    except Court.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Validation failed',
+            'errors': {
+                'court_id': [
+                    'The specified court does not exist.'
+                ]
+            }
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Serializa la cancha con los datos proporcionados en la solicitud
+    serializer = CourtSerializer(court, data=request.data)
+
+    # Verifica que los datos son válidos
+    if serializer.is_valid():
+        # Actualiza la cancha
+        serializer.save()
+
+        # Respesta exitosa
+        return Response({
+            'status': 'success',
+            'message': 'Court updated correctly',
+            'data': {
+                'court': serializer.data
+            }
+        }, status=status.HTTP_200_OK)
+
+    # Respuesta de error
     return Response({
-        'status': 'success',
-        'message': 'Court updated correctly',
-        'data': {
-            'court'
-        }
-    }, status=status.HTTP_200_OK)
+        'status': 'errors',
+        'message': 'Validation failed',
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Lógica para eliminar cancha por admin
