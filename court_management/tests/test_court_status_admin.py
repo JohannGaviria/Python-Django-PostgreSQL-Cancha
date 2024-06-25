@@ -25,7 +25,7 @@ class CourtStatusTestCase(TestCase):
 
 
     # Prueba obtener estado de cancha
-    def test_get_court_statusaaaaaaaa(self):
+    def test_get_court_status(self):
         CourtStatus.objects.create(status='available')
         CourtStatus.objects.create(status='maintenance')
         response = self.client.get(self.url)

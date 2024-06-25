@@ -192,7 +192,7 @@ def add_court_admin(request):
         'status': 'errors',
         'message': 'Validation failed',
         'errors': serializer.errors
-    })
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Lógica para actualizar cancha por admin
