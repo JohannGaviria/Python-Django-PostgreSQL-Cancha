@@ -13,4 +13,5 @@ urlpatterns = [
     path('add-court-image', views.add_court_image_admin, name='add_court_image_admin'),
     path('get-court-image/<int:court_id>', views.get_court_image_admin, name='get_court_image_admin'),
     path('delete-court-image/<int:image_id>', views.delete_court_image_admin, name='delete_court_image_admin'),
+    path('search-court', views.search_courts, name='search_court'),
 ]

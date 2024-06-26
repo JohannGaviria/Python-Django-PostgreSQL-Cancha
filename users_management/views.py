@@ -109,24 +109,14 @@ def search_users_admin(request):
     serializer = UserSerializer(users, many=True)
 
     # Respuesta exitosa
-    if not query:
-        return Response({
-            'status': 'success',
-            'message': 'All users retrieved successfully',
-            'data': {
-                'result': len(serializer.data),
-                'users': serializer.data
-            }
-        })
-    else:
-        return Response({
-            'status': 'success',
-            'message': 'User found successfully',
-            'data': {
-                'result': len(serializer.data),
-                'users': serializer.data
-            }
-        })
+    return Response({
+        'status': 'success',
+        'message': 'User found successfully',
+        'data': {
+            'result': len(serializer.data),
+            'users': serializer.data
+        }
+    }, status=status.HTTP_200_OK)
 
 
 # Lógica para activar/desactivar un usuario por admin
@@ -169,7 +159,7 @@ def change_user_status_admin(request, user_id):
     return Response({
         'status': 'success',
         'message': message
-    })
+    }, status=status.HTTP_200_OK)
 
 
 # Lógica para cambiar el rol a un usuario por admin
@@ -237,7 +227,7 @@ def change_user_role_admin(request, user_id):
             },
             'user': serializer.data
         }
-    })
+    }, status=status.HTTP_200_OK)
 
 
 # Lógica para eliminar un usuario por admin

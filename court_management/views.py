@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
+from django.db.models import Q
 from src.utils import get_paginated
 from .models import SurfaceType, CourtStatus, CourtType, Court, CourtImage
 from .serializers import SurfaceTypeSerializer,  CourtStatusSerializer, CourtTypeSerializer, CourtSerializer, CourtImageSerializer
@@ -361,4 +362,53 @@ def delete_court_image_admin(request, image_id):
     return Response({
         'status': 'success',
         'message': 'Court images deleted successfully'
+    }, status=status.HTTP_200_OK)
+
+
+# Lógica para buscar canchas
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def search_courts(request):
+    # Obtiene los parámetros de la URL
+    query = request.query_params.get('query', None)
+
+    if not query:
+        # Obtiene todas las canchas si no hay query
+        courts = Court.objects.all()
+    else:
+        # Filtra las canchas que coincidan con el parámetro de búsqueda
+        courts = Court.objects.filter(
+            Q(name__icontains=query) |
+            Q(code__icontains=query) |
+            Q(size__icontains=query) |
+            Q(location__icontains=query) |
+            Q(price_hour__icontains=query) |
+            Q(description__icontains=query) |
+            Q(surface_type__type=query) |
+            Q(court_status__status=query) |
+            Q(court_type__type=query)
+        ).distinct()
+
+    # Serializa los datos de las canchas
+    court_serializer = CourtSerializer(courts, many=True)
+
+    # Obtener los IDs de las canchas filtradas
+    court_ids = courts.values_list('id', flat=True)
+
+    # Filtrar las imágenes de las canchas correspondientes
+    court_images = CourtImage.objects.filter(court_id__in=court_ids)
+
+    # Serializar las imágenes de las canchas
+    image_serializer = CourtImageSerializer(court_images, many=True)
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Curts correctly obtained',
+        'data': {
+            'result': len(court_serializer.data),
+            'courts': court_serializer.data,
+            'court_images': image_serializer.data
+        }
     }, status=status.HTTP_200_OK)
