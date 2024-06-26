@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from src.utils import get_paginated
 from .models import SurfaceType, CourtStatus, CourtType, Court, CourtImage
-from .serializers import SurfaceTypeSerializer,  CourtStatusSerializer, CourtTypeSerializer, CourtSerializer
+from .serializers import SurfaceTypeSerializer,  CourtStatusSerializer, CourtTypeSerializer, CourtSerializer, CourtImageSerializer
 
 
 # Lógica para obtener y crear tipos de superficies por admin
@@ -267,4 +267,98 @@ def delete_court_admin(request, court_id):
     return Response({
         'status': 'success',
         'message': 'Court deleted successfully'
+    }, status=status.HTTP_200_OK)
+
+
+# Lógica para agregar imagenes de las canchas por admin
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def add_court_image_admin(request):
+    # Serializa los datos recibidos en la solicitud
+    serializer = CourtImageSerializer(data=request.data)
+
+    # Verifica que los datos son válidos
+    if serializer.is_valid():
+        # Guarda la imagen
+        serializer.save()
+
+        # Respuesta exitosa
+        return Response({
+            'status': 'success',
+            'message': 'Court image added successfully',
+            'data': {
+                'image_court': serializer.data
+            }
+        }, status=status.HTTP_201_CREATED)
+    
+    # Respuesta de error
+    return Response({
+        'status': 'errors',
+        'message': 'Validation failed',
+        'errors': serializer.errors
+    })
+
+
+# Lógica para obtener las imagenes de la cancha por admin
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def get_court_image_admin(request, court_id):
+    try:
+        # Obtiene la cancha por ID
+        Court.objects.get(id=court_id)
+    except Court.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Validation failed',
+            'errors': {
+                'court_id': [
+                    'The specified court does not exist.'
+                ]
+            }
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    # Obtiene todas las imagenes de la cancha
+    court_image = CourtImage.objects.filter(court=court_id)
+    
+    # Serializa los datos
+    serializer = CourtImageSerializer(court_image, many=True)
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Court images geted successfully',
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+# Lógica para eliminar las imagenes de la cancha por admin
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def delete_court_image_admin(request, image_id):
+    try:
+        # Obtiene la cancha por ID
+        court_image = CourtImage.objects.get(id=image_id)
+    except Court.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Validation failed',
+            'errors': {
+                'court_image_id': [
+                    'The specified court image does not exist.'
+                ]
+            }
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Elimina la imagen de la cancha
+    court_image.delete()
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Court images deleted successfully'
     }, status=status.HTTP_200_OK)

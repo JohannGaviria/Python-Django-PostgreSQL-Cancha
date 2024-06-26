@@ -53,6 +53,5 @@ class CourtImageSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'image',
-            'description',
             'court'
         ]
