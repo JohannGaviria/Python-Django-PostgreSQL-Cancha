@@ -5,10 +5,11 @@ from rest_framework import status
 from django.core.files.uploadedfile import SimpleUploadedFile
 from authentication.models import User
 from court_management.models import SurfaceType, CourtStatus, CourtType, Court, CourtImage
+from court_management.serializers import CourtImageSerializer
 
 
-# Tests para obtener las imagenes de la cancha
-class GetCourtImageAdminTestCase(TestCase):
+# Tests para buscar las canchas
+class SearchCourtsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.admin_user = User.objects.create_superuser(
@@ -41,7 +42,7 @@ class GetCourtImageAdminTestCase(TestCase):
             court=self.court,
             image=SimpleUploadedFile(name='test_image2.jpg', content=open('uploads/test_image_2.jpg', 'rb').read(), content_type='image/jpeg')
         )
-        self.url = reverse('get_court_image_admin', args=[self.court.id])
+        self.url = reverse('search_court')
 
 
     # Prueba exitosa
@@ -53,14 +54,14 @@ class GetCourtImageAdminTestCase(TestCase):
         self.assertTrue('data' in response.data)
 
 
-    # Prueba con cancha que no existe
-    def test_nonexistent_court(self):
-        nonexistent_court_url = reverse('get_court_image_admin', args=[999])
-        response = self.client.get(nonexistent_court_url)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    # Prueba con parámetro
+    def test_param_successfully(self):
+        url = self.url + f'?query=Emerald'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue('status' in response.data)
         self.assertTrue('message' in response.data)
-        self.assertTrue('errors' in response.data)
+        self.assertTrue('data' in response.data)
 
 
     # Prueba sin autenticación
