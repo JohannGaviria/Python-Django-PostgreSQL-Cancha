@@ -297,7 +297,7 @@ def add_court_image_admin(request):
         'status': 'errors',
         'message': 'Validation failed',
         'errors': serializer.errors
-    })
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Lógica para obtener las imagenes de la cancha por admin
@@ -342,7 +342,7 @@ def delete_court_image_admin(request, image_id):
     try:
         # Obtiene la cancha por ID
         court_image = CourtImage.objects.get(id=image_id)
-    except Court.DoesNotExist:
+    except CourtImage.DoesNotExist:
         # Respuesta de error
         return Response({
             'status': 'errors',

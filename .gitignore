@@ -26,5 +26,11 @@ local_settings.py
 pip-log.txt
 pip-delete-this-directory.txt
 
-uploads/
-!uploads/photo_default.png
+uploads/*.jpg
+uploads/*.jpeg
+uploads/*.png
+
+!uploads/test_image_1.jpg
+!uploads/test_image_2.jpg
+!uploads/test_image_3.jpg
+!uploads/test_image_4.jpg
