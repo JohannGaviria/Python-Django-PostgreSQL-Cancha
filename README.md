@@ -1157,3 +1157,171 @@ Content-Type: application/json
 	"message": "Court images deleted successfully"
 }
 ```
+
+### Buscar todas las canchas
+
+```http
+GET /api/courts/search-court
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Busca todas las canchas
+
+```http
+GET /api/courts/search-court
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al buscar todas las canchas
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Curts correctly obtained",
+	"data": {
+		"result": 8,
+		"courts": [
+			{
+				"id": 1,
+				"name": "Emerald Field",
+				"code": "CX501",
+				"size": "20x40",
+				"location": "1234 Evergreen Avenue, Springfield, Illinois",
+				"price_hour": "100.00",
+				"description": "Emerald Field is a premier sports facility located in Springfield, Illinois.",
+				"cover_image": "uploads/test_image_3.jpg",
+				"surface_type": 1,
+				"court_status": 1,
+				"court_type": 1
+			},
+			{
+				"id": 1,
+				"name": "Sunset Courts",
+				"code": "CZ201",
+				"size": "20x40",
+				"location": "456 Sunset Boulevard, Los Angeles, California",
+				"price_hour": "120.00",
+				"description": "Sunset Courts offers state-of-the-art facilities for tennis and basketball enthusiasts.",
+				"cover_image": "uploads/test_image_4.jpg",
+				"surface_type": 1,
+				"court_status": 1,
+				"court_type": 1
+			}
+		],
+		"court_images": [
+			{
+				"id": 1,
+				"image": "/uploads/test_image_1.jpg",
+				"court": 1
+			},
+			{
+				"id": 2,
+				"image": "/uploads/test_image_2.jpg",
+				"court": 1
+			},
+			{
+				"id": 3,
+				"image": "/uploads/test_image_3.jpg",
+				"court": 2
+			}
+		]
+	}
+}
+```
+
+### Buscar canchas con parámetros
+
+```http
+GET /api/courts/search-court?query=
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `query`     |	`string`   |	**Requerido**. Consulta de búsqueda |
+
+**tipos de busquedas:**
+- Nombre de la cancha
+- Código de la cancha
+- Tamaño de la cancha
+- Ubicación de la cancha
+- Precio por hora de la cancha
+- Descripción de la cancha
+- Tipo de superficie de la cancha
+- Estado de la cancha de la cancha
+- Tipo de cancha de la cancha
+
+#### Busca canchas con parámetros
+
+```http
+GET /api/courts/search-court?query=consulta_de_búsqueda
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al buscar canchas con parámetro
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Curts correctly obtained",
+	"data": {
+		"result": 8,
+		"courts": [
+			{
+				"id": 1,
+				"name": "Emerald Field",
+				"code": "CX501",
+				"size": "20x40",
+				"location": "1234 Evergreen Avenue, Springfield, Illinois",
+				"price_hour": "100.00",
+				"description": "Emerald Field is a premier sports facility located in Springfield, Illinois.",
+				"cover_image": "uploads/test_image_3.jpg",
+				"surface_type": 1,
+				"court_status": 1,
+				"court_type": 1
+			},
+			{
+				"id": 1,
+				"name": "Sunset Courts",
+				"code": "CZ201",
+				"size": "20x40",
+				"location": "456 Sunset Boulevard, Los Angeles, California",
+				"price_hour": "120.00",
+				"description": "Sunset Courts offers state-of-the-art facilities for tennis and basketball enthusiasts.",
+				"cover_image": "uploads/test_image_4.jpg",
+				"surface_type": 1,
+				"court_status": 1,
+				"court_type": 1
+			}
+		],
+		"court_images": [
+			{
+				"id": 1,
+				"image": "/uploads/test_image_1.jpg",
+				"court": 1
+			},
+			{
+				"id": 2,
+				"image": "/uploads/test_image_2.jpg",
+				"court": 1
+			},
+			{
+				"id": 3,
+				"image": "/uploads/test_image_3.jpg",
+				"court": 2
+			}
+		]
+	}
+}
+```
