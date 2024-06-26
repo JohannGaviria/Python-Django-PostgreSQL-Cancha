@@ -625,3 +625,249 @@ Content-Type: application/json
 	"message": "user deleted successfully"
 }
 ```
+
+### Crear tipos de superficies de canchas por administrador
+
+```http
+POST /api/courts/surface-types
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `type` | `string` | **Requerido**. Tipo de superficie|
+
+#### Crea un tipo de superficie de cancha por administrador
+
+```http
+POST /api/courts/surface-types
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"type": "Grass court"
+}
+```
+
+#### Respuesta exitosa a crear un tipo de superficie de cancha por administrador
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Successfully created surface type",
+	"data": {
+		"surface_type": {
+			"id": 1,
+			"type": "Grass court"
+		}
+	}
+}
+```
+
+### Obtener tipos de superficies de canchas por administrador
+
+```http
+GET /api/courts/surface-types
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Obtiene los tipos de superficies de canchas por administrador
+
+```http
+GET /api/courts/surface-types
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a obtener los tipos de superficies de canchas por administrador
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Correctly obtained surface types",
+	"data": {
+		"surface_type": [
+			{
+				"id": 1,
+				"type": "Grass court"
+			},
+			{
+				"id": 2,
+				"type": "Synthetic court"
+			}
+		]
+	}
+}
+```
+
+### Crear estados de canchas por administrador
+
+```http
+POST /api/courts/court-status
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `status` | `string` | **Requerido**. Estado de cancha|
+
+#### Crea un estado de cancha por administrador
+
+```http
+POST /api/courts/court-status
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"status": "Available"
+}
+```
+
+#### Respuesta exitosa a crear un estado de cancha por administrador
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Successfully created surface type",
+	"data": {
+		"court_status": {
+			"id": 1,
+			"status": "Available"
+		}
+	}
+}
+```
+
+### Obtener estados de canchas por administrador
+
+```http
+GET /api/courts/court-status
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Obtiene los estados de canchas por administrador
+
+```http
+GET /api/courts/court-status
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a obtener los estados de canchas por administrador
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Correctly obtained court status",
+	"data": {
+		"court_status": [
+			{
+				"id": 1,
+				"status": "Available"
+			},
+			{
+				"id": 2,
+				"status": "Reserved"
+			}
+		]
+	}
+}
+```
+
+### Crear tipos de canchas por administrador
+
+```http
+POST /api/courts/surface-types
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `type` | `string` | **Requerido**. Tipo de cacnha|
+
+#### Crea un tipo de cancha por administrador
+
+```http
+POST /api/courts/court-types
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"type": "Basketball court"
+}
+```
+
+#### Respuesta exitosa a crear un tipo de cancha por administrador
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Successfully created court type",
+	"data": {
+		"court_type": {
+			"id": 1,
+			"type": "Basketball court"
+		}
+	}
+}
+```
+
+### Obtener tipos de superficies de canchas por administrador
+
+```http
+GET /api/courts/court-types
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+
+#### Obtiene los tipos de superficies de canchas por administrador
+
+```http
+GET /api/courts/court-types
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a obtener los tipos de superficies de canchas por administrador
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Correctly obtained court types",
+	"data": {
+		"surface_type": [
+			{
+				"id": 1,
+				"type": "Basketball court"
+			},
+			{
+				"id": 2,
+				"type": "Volleyball court"
+			}
+		]
+	}
+}
+```
