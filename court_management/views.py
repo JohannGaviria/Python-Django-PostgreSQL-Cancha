@@ -244,12 +244,27 @@ def update_court_admin(request, court_id):
 @api_view(['DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
-def delete_court_admin(request):
+def delete_court_admin(request, court_id):
+    try:
+        # Obtiene la cancha por ID
+        court = Court.objects.get(id=court_id)
+    except Court.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Validation failed',
+            'errors': {
+                'court_id': [
+                    'The specified court does not exist.'
+                ]
+            }
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Elimina la cancha
+    court.delete()
+
     # Respesta ecitosa
     return Response({
         'status': 'success',
-        'message': 'Court deleted successfully',
-        'data': {
-            'court'
-        }
+        'message': 'Court deleted successfully'
     }, status=status.HTTP_200_OK)
