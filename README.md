@@ -871,3 +871,171 @@ Content-Type: application/json
 	}
 }
 ```
+
+### Crear una cancha por administrador
+
+```http
+POST /api/courts/add-court
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `name` | `string` | **Requerido**. Nombre de la cancha|
+| `code` | `string` | **Requerido**. Código de la cancha|
+| `size` | `string` | **Requerido**. Tamaño de la cancha|
+| `location` | `string` | **Requerido**. Ubicación de la cancha|
+| `price_hour` | `decimal` | **Requerido**. Precio por hora de la cancha|
+| `description` | `string` | Descripcion de la cancha |
+| `cover_image` | `string` | Imagen de portada de la cancha |
+| `surface_type` | `int` | **Requerido**. ID del tipo de superficie|
+| `court_status` | `int` | **Requerido**. ID del estado de cancha|
+| `court_type` | `int` | **Requerido**. ID del tipo de cancha|
+
+#### Crea una cancha por administrador
+
+```http
+POST /api/courts/add-court
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+  "name": "Central Court",
+  "code": "CC001",
+  "size": "20x40",
+  "location": "Main Ave 123, Sports City",
+  "price_hour": 150.00,
+  "description": "A modern court with LED lighting and locker rooms.",
+  "cover_image": "uploads/central_court.jpg",
+  "surface_type": 1,
+  "court_status": 1,
+  "court_type": 1
+}
+```
+
+#### Respuesta exitosa a crear una cancha por administrador
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court created correctly",
+	"data": {
+		"court": {
+			"id": 1,
+			"name": "Central Court",
+			"code": "CC001",
+			"size": "20x40",
+			"location": "Main Ave 123, Sports City",
+			"price_hour": "150.00",
+			"description": "A modern court with LED lighting and locker rooms.",
+			"cover_image": "uploads/central_court.jpg",
+			"surface_type": 1,
+			"court_status": 1,
+			"court_type": 1
+		}
+	}
+}
+```
+
+### Actualizar una cancha por administrador
+
+```http
+PUT /api/courts/update-court/{court_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+| `name` | `string` | Nombre de la cancha|
+| `code` | `string` | Código de la cancha|
+| `size` | `string` | Tamaño de la cancha|
+| `location` | `string` | Ubicación de la cancha|
+| `price_hour` | `decimal` | Precio por hora de la cancha|
+| `description` | `string` | Descripcion de la cancha |
+| `cover_image` | `string` | Imagen de portada de la cancha |
+| `surface_type` | `int` | ID del tipo de superficie|
+| `court_status` | `int` | ID del estado de cancha|
+| `court_type` | `int` | ID del tipo de cancha|
+
+#### Actualiza una cancha por administrador
+
+```http
+PUT /api/courts/update-court/{court_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+  "name": "New Central Court",
+  "code": "CC011",
+  "size": "20x45",
+  "location": "New Main Ave 123, Sports City",
+  "price_hour": 155.00,
+  "description": "A modern court with LED lighting and locker rooms.",
+  "cover_image": "uploads/central_court.jpg",
+  "surface_type": 1,
+  "court_status": 1,
+  "court_type": 1
+}
+```
+
+#### Respuesta exitosa a actualizar una cancha por administrador
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court updated correctly",
+	"data": {
+		"court": {
+			"id": 1,
+			"name": "New Central Court",
+			"code": "CC011",
+			"size": "20x45",
+			"location": "New Main Ave 123, Sports City",
+			"price_hour": "155.00",
+			"description": "A modern court with LED lighting and locker rooms.",
+			"cover_image": "uploads/central_court.jpg",
+			"surface_type": 1,
+			"court_status": 1,
+			"court_type": 1
+		}
+	}
+}
+```
+
+### Eliminar una cancha por administrador
+
+```http
+DELETE /api/courts/delete-court/{court_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+
+#### Elimina una cancha por administrador
+
+```http
+DELETE /api/courts/delete-court/{court_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a eliminar una cancha por administrador
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court deleted successfully"
+}
+```
