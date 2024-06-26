@@ -956,7 +956,7 @@ PUT /api/courts/update-court/{court_id}
 | `location` | `string` | Ubicación de la cancha|
 | `price_hour` | `decimal` | Precio por hora de la cancha|
 | `description` | `string` | Descripcion de la cancha |
-| `cover_image` | `string` | Imagen de portada de la cancha |
+| `cover_image` | `file` | Imagen de portada de la cancha |
 | `surface_type` | `int` | ID del tipo de superficie|
 | `court_status` | `int` | ID del estado de cancha|
 | `court_type` | `int` | ID del tipo de cancha|
@@ -1037,5 +1037,123 @@ Content-Type: application/json
 {
 	"status": "success",
 	"message": "Court deleted successfully"
+}
+```
+
+### Agregar imagenes de las canchas por administrador
+
+```http
+POST /api/courts/add-court-image
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `image` | `file` | **Requerido**. Imagen de la cancha |
+| `court` | `int` | **Requerido**. ID de la cancha |
+
+#### Agrega imagenes de la cancha por administrador
+
+```http
+POST /api/courts/add-court-image
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"image": "uploads/central_court_1.jpg",
+	"court": 1
+}
+```
+
+#### Respuesta exitosa a agregar imagen de la cancha por administrador
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court image added successfully",
+	"data": {
+		"image_court": {
+			"id": 1,
+			"image": "/uploads/central_court_1.jpg",
+			"court": 1
+		}
+	}
+}
+```
+
+### Obtener imagenes de la cancha por administrador
+
+```http
+GET /api/courts/get-court-image/{court_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+
+#### Obtiene imagenes de la cancha por administrador
+
+```http
+GET /api/courts/get-court-image/{court_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a obtener imagenes de la cancha por administrador
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court images geted successfully",
+	"data": [
+		{
+			"id": 1,
+			"image": "/uploads/central_court_1.jpg",
+			"court": 1
+		},
+		{
+			"id": 2,
+			"image": "/uploads/central_court_2.jpg",
+			"court": 1
+		}
+	]
+}
+```
+
+### Eliminar imagen de las canchas por administrador
+
+```http
+DELETE /api/courts/delete-court-image/{court_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+
+#### Elimina imagenes de la cancha por administrador
+
+```http
+DELETE /api/courts/delete-court-image/{court_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a eliminar imagen de la cancha por administrador
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Court images deleted successfully"
 }
 ```
