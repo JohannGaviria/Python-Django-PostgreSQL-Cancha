@@ -22,7 +22,6 @@ class AddCourtTestCase(TestCase):
         self.court_status = CourtStatus.objects.create(status="Available")
         self.surface_type = SurfaceType.objects.create(type="Grass")
         self.court_type = CourtType.objects.create(type="Soccer")
-
         self.data = {
             "name": "Emerald Field",
             "code": "CZ501",

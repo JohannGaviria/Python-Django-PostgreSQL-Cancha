@@ -213,7 +213,7 @@ def update_court_admin(request, court_id):
                     'The specified court does not exist.'
                 ]
             }
-        }, status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_404_NOT_FOUND)
 
     # Serializa la cancha con los datos proporcionados en la solicitud
     serializer = CourtSerializer(court, data=request.data)
@@ -258,7 +258,7 @@ def delete_court_admin(request, court_id):
                     'The specified court does not exist.'
                 ]
             }
-        }, status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_404_NOT_FOUND)
     
     # Elimina la cancha
     court.delete()
