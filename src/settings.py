@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'authentication',
     'users_management',
     'court_management',
+    'reserver_management',
 ]
 
 MIDDLEWARE = [
