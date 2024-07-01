@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+from src.utils import get_paginated
 from .models import Reservation
 from .serializers import ReservationSerializer
 
@@ -58,3 +59,30 @@ def reserve_court(request):
         'message': 'Validation failed',
         'errors': serializer.errors
     }, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Lógiaca para que el usuario vea sus reservaciones
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def user_reservations(request):
+    # Obtiene el usuario actual
+    user = request.user
+
+    # Obtiene todas las reservaciones del usuario
+    reservations = Reservation.objects.filter(user=user).order_by('id')
+
+    # Obtiene las paginas solicitadas
+    pages = get_paginated(request, reservations, 2)
+
+    # Serializa los datos
+    serializer = ReservationSerializer(pages, many=True)
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Reservations obtained correctly',
+        'data': {
+            'reservations': serializer.data
+        }
+    }, status=status.HTTP_200_OK)
