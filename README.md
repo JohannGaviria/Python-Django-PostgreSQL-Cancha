@@ -67,7 +67,13 @@ python manage.py migrate
 python manage.py create_default_rol
 ```
 
-7. **Ejecutar el servidor:**
+7. **Crea los estados de reservacion por defecto:**
+
+```bash
+python manager.py create_default_status_reservation
+```
+
+8. **Ejecutar el servidor:**
 
 ```bash
 python manage.py runserver
@@ -1322,6 +1328,57 @@ Content-Type: application/json
 				"court": 2
 			}
 		]
+	}
+}
+```
+
+### Crear una reservacion de una cancha
+
+```http
+POST /api/reserves/reserve-court
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `start_datatime` | `datetime` | **Requerido**. Fecha de inicio de la reservacion |
+| `end_datatime` | `datetime` | **Requerido**. Fecha de fin de la reservacion |
+| `status` | `int` | **Requerido**. ID del estado de reservacion |
+| `user` | `int` | **Requerido**. ID del usuario |
+| `court` | `int` | **Requerido**. ID de la cancha |
+
+#### Crea una reservacion de una cancha
+
+```http
+POST /api/reserves/reserve-court
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"start_datetime": "2024-07-01T15:30",
+	"end_datetime": "2024-07-01T16:30",
+	"status": 1,
+	"user": 1,
+	"court": 1
+}
+```
+
+#### Respuesta exitosa a reservar una cancha
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Reservation created successfully",
+	"data": {
+		"id": 1,
+		"start_datetime": "2024-07-01T15:30",
+		"end_datetime": "2024-07-01T16:30",
+		"status": 1,
+		"user": 1,
+		"court": 1
 	}
 }
 ```

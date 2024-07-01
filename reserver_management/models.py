@@ -5,7 +5,16 @@ from court_management.models import Court
 
 # Definición del modelo de estado de reservacion
 class StatusReservation(models.Model):
-    status = models.CharField(max_length=100, null=False)
+    AVAILABLE='Available'
+    CONFIRMED='Confirmed'
+    CANCELLED='Cancelled'
+    STATUS_RESEVATION = [
+        (AVAILABLE, 'Available'),
+        (CONFIRMED, 'Confirmed'),
+        (CANCELLED, 'Cancelled'),
+    ]
+
+    status = models.CharField(max_length=100, choices=STATUS_RESEVATION, unique=True, null=False)
 
 
 # Definición del modelo de reservacion
