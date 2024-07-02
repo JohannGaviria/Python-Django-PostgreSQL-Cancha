@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users_management',
     'court_management',
     'reserver_management',
+    'review',
 ]
 
 MIDDLEWARE = [
