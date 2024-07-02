@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from src.utils import get_paginated
 from .models import Reservation
@@ -73,7 +73,31 @@ def user_reservations(request):
     reservations = Reservation.objects.filter(user=user).order_by('id')
 
     # Obtiene las paginas solicitadas
-    pages = get_paginated(request, reservations, 2)
+    pages = get_paginated(request, reservations, 10)
+
+    # Serializa los datos
+    serializer = ReservationSerializer(pages, many=True)
+
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Reservations obtained correctly',
+        'data': {
+            'reservations': serializer.data
+        }
+    }, status=status.HTTP_200_OK)
+
+
+# Lógica para obtener todas las reservaciones por admin
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def get_reservations_admin(request):
+    # Obtiene todas las reservaciones del usuario
+    reservations = Reservation.objects.all().order_by('id')
+
+    # Obtiene las paginas solicitadas
+    pages = get_paginated(request, reservations, 10)
 
     # Serializa los datos
     serializer = ReservationSerializer(pages, many=True)

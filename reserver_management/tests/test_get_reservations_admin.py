@@ -10,10 +10,10 @@ from reserver_management.models import StatusReservation
 
 
 # Tests para la creacion de reservas    
-class ReservationTests(TestCase):    
+class GetReservationsAdminTests(TestCase):    
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('user_reservations')
+        self.url = reverse('get_reservations_admin')
         user_role = Rol.objects.create(rol='user')
         self.user = User.objects.create_user(
             full_name="test fullname",

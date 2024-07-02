@@ -1441,3 +1441,70 @@ Content-Type: application/json
 	}
 }
 ```
+
+### Obtener todas las reservaciones por admin
+
+```http
+GET /api/reserves/reservations
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `page` | `int` | Numero de la pagina |
+
+#### Obtiene todas las reservaciones por admin
+
+```
+GET /api/reserves/reservations
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Obtiene todas las reservaciones paginada por admin
+
+```http
+GET /api/reserves/reservations?page={numero_de_la_pagina}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al obtener todas las reservaciones por admin
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Reservations obtained correctly",
+	"data": {
+		"reservations": [
+			{
+				"id": 1,
+				"start_datetime": "2024-06-27T14:30:00Z",
+				"end_datetime": "2024-06-27T16:30:00Z",
+				"status": 1,
+				"user": 1,
+				"court": 1
+			},
+			{
+				"id": 2,
+				"start_datetime": "2024-06-27T14:30:00Z",
+				"end_datetime": "2024-06-27T16:30:00Z",
+				"status": 1,
+				"user": 1,
+				"court": 2
+			},
+			{
+				"id": 3,
+				"start_datetime": "2024-06-27T14:30:00Z",
+				"end_datetime": "2024-06-27T16:30:00Z",
+				"status": 1,
+				"user": 2,
+				"court": 3
+			}
+		]
+	}
+}
+```
