@@ -2,16 +2,17 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from django.utils import timezone
 from authentication.models import User, Rol
 from court_management.models import SurfaceType, CourtStatus, CourtType, Court
-from reserver_management.models import StatusReservation
+from reserver_management.models import StatusReservation, Reservation
+import datetime
 
 
-# Tests para la creacion de reservas    
-class ReservationTests(TestCase):    
+# Tests para cancelar reservaciones
+class CancelReservationTests(TestCase):    
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('user_reservations')
         user_role = Rol.objects.create(rol='user')
         self.user = User.objects.create_user(
             full_name="test fullname",
@@ -37,18 +38,30 @@ class ReservationTests(TestCase):
             court_type=self.court_type
         )
         self.status_reservation = StatusReservation.objects.create(status=StatusReservation.AVAILABLE)
-        self.reservation = {
-            'start_datetime': '2024-07-01T14:30',
-            'end_datetime': '2024-07-01T16:30',
-            'status': self.status_reservation,
-            'user': self.user,
-            'court': self.court,
-        }
+        StatusReservation.objects.create(status=StatusReservation.CANCELLED)
+        self.reservation = Reservation.objects.create(
+            start_datetime=timezone.make_aware(datetime.datetime(2024, 7, 1, 14, 30)),
+            end_datetime=timezone.make_aware(datetime.datetime(2024, 7, 1, 16, 30)),
+            status=self.status_reservation,
+            user=self.user,
+            court=self.court,
+        )
+        self.url = reverse('cancel_reservation', args=[self.reservation.id])
 
+    
     # Prueba exitosa
     def test_successfully(self):
-        response = self.client.get(self.url)
+        response = self.client.patch(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue('status' in response.data)
         self.assertTrue('message' in response.data)
-        self.assertTrue('data' in response.data)
+
+
+    # Prueba no existe la reservacion
+    def test_does_not_exist(self):
+        self.url = reverse('cancel_reservation', args=[999])
+        response = self.client.patch(self.url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertTrue('status' in response.data)
+        self.assertTrue('message' in response.data)
+        self.assertTrue('errors' in response.data)

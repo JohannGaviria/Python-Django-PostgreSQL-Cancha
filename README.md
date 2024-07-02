@@ -1508,3 +1508,34 @@ Content-Type: application/json
 	}
 }
 ```
+
+### Cancelar una reservacion
+
+```http
+PATCH /api/reserves/cancel-reservation/{reservation_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `reservation_id` | `int` | **Requerido**. ID de la reservacion |
+
+#### Cancela una reservacion
+
+```http
+PATCH /api/reserves/cancel-reservation/{reservation_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a cancelar una reservacion
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Reservation canceled correctly"
+}
+```

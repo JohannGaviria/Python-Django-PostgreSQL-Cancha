@@ -2,11 +2,9 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from django.contrib.auth.models import User
-from django.test import TestCase
 from django.utils import timezone
 from authentication.models import User, Rol
-from court_management.models import SurfaceType, CourtStatus, CourtType, Court, CourtImage
+from court_management.models import SurfaceType, CourtStatus, CourtType, Court
 from reserver_management.models import Reservation, StatusReservation
 import datetime
 

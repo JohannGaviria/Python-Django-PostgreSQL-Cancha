@@ -2,28 +2,24 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from django.contrib.auth.models import User
-from django.test import TestCase
 from authentication.models import User, Rol
 from court_management.models import SurfaceType, CourtStatus, CourtType, Court
 from reserver_management.models import StatusReservation
 
 
-# Tests para la creacion de reservas    
+# Tests para obtener las reservaciones por admin
 class GetReservationsAdminTests(TestCase):    
     def setUp(self):
         self.client = APIClient()
         self.url = reverse('get_reservations_admin')
-        user_role = Rol.objects.create(rol='user')
-        self.user = User.objects.create_user(
-            full_name="test fullname",
-            email="test@email.com",
-            password="testpassword",
-            phone="+57 321 543 7665",
-            birth_date="1999-09-09",
-            rol=user_role
+        self.admin_user = User.objects.create_superuser(
+            full_name="test Admin",
+            email="admin@example.com",
+            password="adminpassword",
+            phone="+57 301 203 4354",
+            birth_date="1990-01-01"
         )
-        self.client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.admin_user)
         self.court_status = CourtStatus.objects.create(status="Available")
         self.surface_type = SurfaceType.objects.create(type="Grass")
         self.court_type = CourtType.objects.create(type="Soccer")
@@ -43,9 +39,10 @@ class GetReservationsAdminTests(TestCase):
             'start_datetime': '2024-07-01T14:30',
             'end_datetime': '2024-07-01T16:30',
             'status': self.status_reservation,
-            'user': self.user,
+            'user': self.admin_user,
             'court': self.court,
         }
+
 
     # Prueba exitosa
     def test_successfully(self):

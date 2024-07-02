@@ -5,7 +5,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from src.utils import get_paginated
-from .models import Reservation
+from .models import StatusReservation, Reservation
 from .serializers import ReservationSerializer
 
 
@@ -33,6 +33,7 @@ def reserve_court(request):
 
         # Verifica la disponibilidad de la cancha
         if overlapping_reservations:
+            # Respuesta error
             return Response({
                 'status': 'errors',
                 'message': 'Validation failed',
@@ -85,6 +86,39 @@ def user_reservations(request):
         'data': {
             'reservations': serializer.data
         }
+    }, status=status.HTTP_200_OK)
+
+
+# Lógica para cancelar una reservacion
+@api_view(['PATCH'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def cancel_reservation(request, reservation_id):
+    try:
+        # Intenta obtener la reservacion del ID
+        reservation = Reservation.objects.get(id=reservation_id, user=request.user)
+    except Reservation.DoesNotExist:
+        # Respuesta de error
+        return Response({
+            'status': 'errors',
+            'message': 'Validation failed',
+            'errors': {
+                'reservation': [
+                    'Reservation not found'
+                ]
+            }
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Actualiza el estado a cancelado
+    reservation.status = StatusReservation.objects.get(status=StatusReservation.CANCELLED)
+    
+    # Guarda el cambio del estado
+    reservation.save()
+    
+    # Respuesta exitosa
+    return Response({
+        'status': 'success',
+        'message': 'Reservation canceled correctly'
     }, status=status.HTTP_200_OK)
 
 
