@@ -1464,7 +1464,7 @@ Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #### Obtiene todas las reservaciones paginada por admin
 
 ```http
-GET /api/reserves/reservations?page={numero_de_la_pagina}
+GET /api/reserves/reservations?page={number_page}
 Content-Type: application/json
 Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
@@ -1537,5 +1537,189 @@ Content-Type: application/json
 {
 	"status": "success",
 	"message": "Reservation canceled correctly"
+}
+```
+
+### Crear una review para una cancha
+
+```http
+POST /api/reviews/create-review
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `rating` | `int` | **Requerido**. Calificación del 1 a 5 |
+| `comment` | `string` | Comentario de la review |
+| `user_id` | `int` | **Requerido**. ID del usuario |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+
+#### Crea una review para una cancha
+
+```http
+POST /api/reviews/create-review
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"rating": 3,
+	"comment": "A very good court but poor lighting",
+	"user": 1,
+	"court": 2
+}
+```
+
+#### Respuesta exitosa a crear una review
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Review created successfully",
+	"data": {
+		"review": {
+			"id": 1,
+			"rating": 3,
+			"comment": "A very good court but poor lighting",
+			"comment_datetime": "2024-07-03T17:16:40.420006Z",
+			"user": 1,
+			"court": 1
+		}
+	}
+}
+```
+
+### Obtener todas las reviews de una cancha
+
+```http
+GET /api/reviews/list-review/{court_id}?page={number_page}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `court_id` | `int` | **Requerido**. ID de la cancha |
+| `page` | `int` | **Requerido**. Numero de página |
+
+#### Obtiene todas las reviews de una cancha
+
+```http
+GET /api/reviews/list-review/{court_id}?page={number_page}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a obtener todas las reviews de una cancha
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Review obtained correctly",
+	"data": {
+		"reviews": [
+			{
+				"id": 1,
+				"rating": 3,
+				"comment": "A very good court but poor lighting",
+				"comment_datetime": "2024-07-03T17:16:40.420006Z",
+				"user": 1,
+				"court": 1
+			},
+			{
+				"id": 2,
+				"rating": 4,
+				"comment": "Excellent field, well maintained and with a great atmosphere to play",
+				"comment_datetime": "2024-07-02T19:38:10.617916Z",
+				"user": 2,
+				"court": 1
+			}
+		]
+	}
+}
+```
+
+### Obtener todas las reviews por admin
+
+```http
+GET /api/reviews/list-all?page={number_page}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `page` | `int` | **Requerido**. Numero de página |
+
+#### Obtiene todas las reviews por admin
+
+```htpp
+GET /api/reviews/list-all?page={number_page}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa al obtener todas las reviews por admin
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Review obtained correctly",
+	"data": {
+		"reviews": [
+			{
+				"id": 1,
+				"rating": 3,
+				"comment": "A very good court but poor lighting",
+				"comment_datetime": "2024-07-03T17:16:40.420006Z",
+				"user": 1,
+				"court": 1
+			},
+			{
+				"id": 2,
+				"rating": 4,
+				"comment": "Excellent field, well maintained and with a great atmosphere to play",
+				"comment_datetime": "2024-07-02T19:38:10.617916Z",
+				"user": 2,
+				"court": 1
+			}
+		]
+	}
+}
+```
+
+### Eliminar una review por admin
+
+```http
+DELETE /api/reviews/delete-review/{review_id}
+```
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido**. Token de autenticación |
+| `review_id` | `int` | **Requerido**. ID de la review |
+
+#### Elimina una review por admin
+
+```http
+DELETE /api/reviews/delete-review/{review_id}
+Content-Type: application/json
+Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Respuesta exitosa a eliminar una review
+
+```http
+HTTP/1.1 200 Ok
+Content-Type: application/json
+
+{
+	"status": "success",
+	"message": "Review successfully deleted"
 }
 ```
